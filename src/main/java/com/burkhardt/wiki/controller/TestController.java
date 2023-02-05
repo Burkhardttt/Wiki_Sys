@@ -1,11 +1,15 @@
 package com.burkhardt.wiki.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
+
+	@Value("${test.hello:TEST}") // priority 1: check application.properties, priority 2: use default value TEST
+	private String testHello;
 	/**
 	 * GET, POST, PUT, DELETE
 	 * /user?id=1
@@ -17,7 +21,7 @@ public class TestController {
 	//	@RequestMapping("/hello")
 	@GetMapping("/hello")
 	public String hello(){
-		return "Hello World!";
+		return testHello;
 	}
 
 	@PostMapping("/hello/post")

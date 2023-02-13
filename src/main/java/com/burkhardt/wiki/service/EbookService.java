@@ -3,8 +3,9 @@ package com.burkhardt.wiki.service;
 import com.burkhardt.wiki.domain.Ebook;
 import com.burkhardt.wiki.domain.EbookExample;
 import com.burkhardt.wiki.mapper.EbookMapper;
-import com.burkhardt.wiki.req.EbookReq;
-import com.burkhardt.wiki.resp.EbookResp;
+import com.burkhardt.wiki.req.EbookQueryReq;
+import com.burkhardt.wiki.req.EbookSaveReq;
+import com.burkhardt.wiki.resp.EbookQueryResp;
 import com.burkhardt.wiki.resp.PageResp;
 import com.burkhardt.wiki.util.CopyUtil;
 import com.github.pagehelper.PageHelper;
@@ -25,7 +26,7 @@ public class EbookService {
 	@Resource
 	private EbookMapper ebookMapper;
 
-	public PageResp<EbookResp> list(EbookReq req) {
+	public PageResp<EbookQueryResp> list(EbookQueryReq req) {
 
 		EbookExample ebookExample = new EbookExample();
 		EbookExample.Criteria criteria = ebookExample.createCriteria();
@@ -40,21 +41,35 @@ public class EbookService {
 		LOG.info("Total number of rows: " + pageInfo.getTotal());
 		LOG.info("Total number of pages: " + pageInfo.getPages());
 
-//		List<EbookResp> respList = new ArrayList<>();
+//		List<EbookQueryResp> respList = new ArrayList<>();
 //		for (Ebook ebook : ebookList) {
-////			EbookResp ebookResp = new EbookResp();
+////			EbookQueryResp ebookResp = new EbookQueryResp();
 ////			BeanUtils.copyProperties(ebook, ebookResp);
-//			EbookResp ebookResp = CopyUtil.copy(ebook, EbookResp.class);
+//			EbookQueryResp ebookResp = CopyUtil.copy(ebook, EbookQueryResp.class);
 //			respList.add(ebookResp); // single object copy
 //		}
 
 		// list copy
-		List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
+		List<EbookQueryResp> list = CopyUtil.copyList(ebookList, EbookQueryResp.class);
 
-		PageResp<EbookResp> pageResp = new PageResp<>();
+		PageResp<EbookQueryResp> pageResp = new PageResp<>();
 		pageResp.setTotal(pageInfo.getTotal());
 		pageResp.setList(list);
 
 		return pageResp;
 	}
+
+	/**
+	 * save
+	 */
+	public void save(EbookSaveReq req){
+		Ebook ebook = CopyUtil.copy(req, Ebook.class);
+		if (ObjectUtils.isEmpty(req.getId())) { // insertion
+			ebookMapper.insert(ebook);
+		}
+		else {// update
+			ebookMapper.updateByPrimaryKey(ebook);
+		}
+	}
+
 }

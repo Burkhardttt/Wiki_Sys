@@ -1,8 +1,14 @@
 package com.burkhardt.wiki.req;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+
 public class PageReq {
+    @NotNull(message = "page number for each page cannot be null")
     private int page;
 
+    @NotNull(message = "number of items for each page cannot be null")
+    @Max(value = 1000, message = "number of items for each page cannot be greater than 1000")
     private int size;
 
     public int getPage() {

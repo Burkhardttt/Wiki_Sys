@@ -8,6 +8,7 @@ import com.burkhardt.wiki.req.EbookSaveReq;
 import com.burkhardt.wiki.resp.EbookQueryResp;
 import com.burkhardt.wiki.resp.PageResp;
 import com.burkhardt.wiki.util.CopyUtil;
+import com.burkhardt.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -25,6 +26,9 @@ public class EbookService {
 
 	@Resource
 	private EbookMapper ebookMapper;
+
+	@Resource
+	private SnowFlake snowFlake;
 
 	public PageResp<EbookQueryResp> list(EbookQueryReq req) {
 
@@ -65,6 +69,12 @@ public class EbookService {
 	public void save(EbookSaveReq req){
 		Ebook ebook = CopyUtil.copy(req, Ebook.class);
 		if (ObjectUtils.isEmpty(req.getId())) { // insertion
+			ebook.setId(snowFlake.nextId());
+
+			ebook.setDocCount(0); // Column 'doc_count' cannot be null
+			ebook.setViewCount(0);
+			ebook.setVoteCount(0);
+
 			ebookMapper.insert(ebook);
 		}
 		else {// update

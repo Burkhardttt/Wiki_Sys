@@ -13,11 +13,11 @@ public class Ebook {
 
     private String cover;
 
-    private Integer docCount;
+    private Integer docCount = 0;
 
-    private Integer viewCount;
+    private Integer viewCount = 0;
 
-    private Integer voteCount;
+    private Integer voteCount = 0;
 
     public Long getId() {
         return id;

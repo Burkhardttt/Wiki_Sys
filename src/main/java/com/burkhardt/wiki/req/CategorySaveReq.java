@@ -1,16 +1,18 @@
-package com.burkhardt.wiki.domain;
+package com.burkhardt.wiki.req;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-public class Category {
+import javax.validation.constraints.NotNull;
+
+public class CategorySaveReq {
     @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
     private Long parent;
-
+    @NotNull(message = "[name] cannot be null")
     private String name;
-
+    @NotNull(message = "[sort] cannot be null")
     private Integer sort;
 
     public Long getId() {

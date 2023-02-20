@@ -7,12 +7,12 @@
         <a-form layout="inline" :model="param">
           <a-form-item>
             <a-button type="primary" @click="handleQuery()">
-              Query(查询)
+              查询
             </a-button>
           </a-form-item>
           <a-form-item>
             <a-button type="primary" @click="add()">
-              Add(新增)
+              新增
             </a-button>
           </a-form-item>
         </a-form>
@@ -30,16 +30,16 @@
         <template v-slot:action="{ text, record }">
           <a-space size="small">
             <a-button type="primary" @click="edit(record)">
-              Edit(编辑)
+              编辑
             </a-button>
             <a-popconfirm
-                title="Confirm to delete?(删除后不可恢复，确认删除?)"
-                ok-text="Yes(是)"
-                cancel-text="No(否)"
+                title="删除后不可恢复，确认删除?"
+                ok-text="是"
+                cancel-text="否"
                 @confirm="handleDelete(record.id)"
             >
               <a-button type="danger">
-                Delete(删除)
+                删除
               </a-button>
             </a-popconfirm>
           </a-space>
@@ -59,7 +59,17 @@
         <a-input v-model:value="category.name" />
       </a-form-item>
       <a-form-item label="父分类">
-        <a-input v-model:value="category.parent" />
+        <a-select
+            v-model:value="category.parent"
+            ref="select"
+        >
+          <a-select-option value="0">
+            无
+          </a-select-option>
+          <a-select-option v-for="c in level1" :key="c.id" :value="c.id" :disabled="category.id === c.id">
+            {{c.name}}
+          </a-select-option>
+        </a-select>
       </a-form-item>
       <a-form-item label="顺序">
         <a-input v-model:value="category.sort" />

@@ -1,9 +1,9 @@
 package com.burkhardt.wiki.service;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.burkhardt.wiki.domain.Content;
 import com.burkhardt.wiki.domain.Doc;
 import com.burkhardt.wiki.domain.DocExample;
+import com.burkhardt.wiki.mapper.ContentMapper;
 import com.burkhardt.wiki.mapper.DocMapper;
 import com.burkhardt.wiki.req.DocQueryReq;
 import com.burkhardt.wiki.req.DocSaveReq;
@@ -11,6 +11,8 @@ import com.burkhardt.wiki.resp.DocQueryResp;
 import com.burkhardt.wiki.resp.PageResp;
 import com.burkhardt.wiki.util.CopyUtil;
 import com.burkhardt.wiki.util.SnowFlake;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class DocService {
 
 	@Resource
 	private DocMapper docMapper;
+
+	@Resource
+	private ContentMapper contentMapper;
 
 	@Resource
 	private SnowFlake snowFlake;
@@ -77,13 +82,21 @@ public class DocService {
 	 */
 	public void save(DocSaveReq req) {
 		Doc doc = CopyUtil.copy(req, Doc.class);
+		Content content = CopyUtil.copy(req, Content.class);
 		if (ObjectUtils.isEmpty(req.getId())) {
 			// 新增
 			doc.setId(snowFlake.nextId());
 			docMapper.insert(doc);
+
+			content.setId(doc.getId());
+			contentMapper.insert(content);
 		} else {
 			// 更新
 			docMapper.updateByPrimaryKey(doc);
+			int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
+			if (count == 0) {
+				contentMapper.insert(content);
+			}
 		}
 	}
 

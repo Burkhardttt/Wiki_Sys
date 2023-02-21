@@ -2,8 +2,8 @@ package com.burkhardt.wiki.controller;
 
 import com.burkhardt.wiki.req.DocQueryReq;
 import com.burkhardt.wiki.req.DocSaveReq;
-import com.burkhardt.wiki.resp.CommonResp;
 import com.burkhardt.wiki.resp.DocQueryResp;
+import com.burkhardt.wiki.resp.CommonResp;
 import com.burkhardt.wiki.resp.PageResp;
 import com.burkhardt.wiki.service.DocService;
 import org.springframework.web.bind.annotation.*;

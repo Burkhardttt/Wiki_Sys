@@ -6,6 +6,7 @@ import com.burkhardt.wiki.exception.BusinessException;
 import com.burkhardt.wiki.exception.BusinessExceptionCode;
 import com.burkhardt.wiki.mapper.UserMapper;
 import com.burkhardt.wiki.req.UserQueryReq;
+import com.burkhardt.wiki.req.UserResetPasswordReq;
 import com.burkhardt.wiki.req.UserSaveReq;
 import com.burkhardt.wiki.resp.PageResp;
 import com.burkhardt.wiki.resp.UserQueryResp;
@@ -103,5 +104,13 @@ public class UserService {
 		} else {
 			return userList.get(0);
 		}
+	}
+
+	/**
+	 * 修改密码
+	 */
+	public void resetPassword(UserResetPasswordReq req) {
+		User user = CopyUtil.copy(req, User.class);
+		userMapper.updateByPrimaryKeySelective(user);
 	}
 }

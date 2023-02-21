@@ -1,6 +1,7 @@
 package com.burkhardt.wiki.controller;
 
 import com.burkhardt.wiki.req.UserQueryReq;
+import com.burkhardt.wiki.req.UserResetPasswordReq;
 import com.burkhardt.wiki.req.UserSaveReq;
 import com.burkhardt.wiki.resp.CommonResp;
 import com.burkhardt.wiki.resp.PageResp;
@@ -40,6 +41,14 @@ public class UserController {
 	public CommonResp delete(@PathVariable Long id) {
 		CommonResp resp = new CommonResp<>();
 		userService.delete(id);
+		return resp;
+	}
+
+	@PostMapping("/reset-password")
+	public CommonResp resetPassword(@Valid @RequestBody UserResetPasswordReq req) {
+		req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+		CommonResp resp = new CommonResp<>();
+		userService.resetPassword(req);
 		return resp;
 	}
 }

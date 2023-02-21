@@ -6,10 +6,12 @@ import com.burkhardt.wiki.resp.CommonResp;
 import com.burkhardt.wiki.resp.PageResp;
 import com.burkhardt.wiki.resp.UserQueryResp;
 import com.burkhardt.wiki.service.UserService;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/user")
@@ -28,6 +30,7 @@ public class UserController {
 
 	@PostMapping("/save")
 	public CommonResp save(@Valid @RequestBody UserSaveReq req) {
+		req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
 		CommonResp resp = new CommonResp<>();
 		userService.save(req);
 		return resp;

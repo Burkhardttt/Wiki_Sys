@@ -3,6 +3,8 @@ package com.burkhardt.wiki.service;
 import com.burkhardt.wiki.domain.Content;
 import com.burkhardt.wiki.domain.Doc;
 import com.burkhardt.wiki.domain.DocExample;
+import com.burkhardt.wiki.exception.BusinessException;
+import com.burkhardt.wiki.exception.BusinessExceptionCode;
 import com.burkhardt.wiki.mapper.ContentMapper;
 import com.burkhardt.wiki.mapper.DocMapper;
 import com.burkhardt.wiki.mapper.DocMapperCust;
@@ -11,6 +13,8 @@ import com.burkhardt.wiki.req.DocSaveReq;
 import com.burkhardt.wiki.resp.DocQueryResp;
 import com.burkhardt.wiki.resp.PageResp;
 import com.burkhardt.wiki.util.CopyUtil;
+import com.burkhardt.wiki.util.RedisUtil;
+import com.burkhardt.wiki.util.RequestContext;
 import com.burkhardt.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +42,9 @@ public class DocService {
 
 	@Resource
 	private SnowFlake snowFlake;
+
+	@Resource
+	public RedisUtil redisUtil;
 
 	public List<DocQueryResp> all(Long ebookId) {
 		DocExample docExample = new DocExample();
@@ -130,10 +137,16 @@ public class DocService {
 	}
 
 	/**
-	 * vote
-	 * @param id
+	 * 点赞
 	 */
 	public void vote(Long id) {
-		docMapperCust.increaseVoteCount(id);
+		// docMapperCust.increaseVoteCount(id);
+		// 远程IP+doc.id作为key，24小时内不能重复
+		String ip = RequestContext.getRemoteAddr();
+		if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600 * 24)) {
+			docMapperCust.increaseVoteCount(id);
+		} else {
+			throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+		}
 	}
 }

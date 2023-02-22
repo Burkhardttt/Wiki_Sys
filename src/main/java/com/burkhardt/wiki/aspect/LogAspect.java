@@ -2,10 +2,14 @@ package com.burkhardt.wiki.aspect;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.PropertyPreFilters;
+import com.burkhardt.wiki.util.RequestContext;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -24,7 +28,7 @@ public class LogAspect {
 	private final static Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
 	/** 定义一个切点 */
-	@Pointcut("execution(public * com.burkhardt.*.controller..*Controller.*(..))")
+	@Pointcut("execution(public * com.jiawa.*.controller..*Controller.*(..))")
 	public void controllerPointcut() {}
 
 	@Before("controllerPointcut()")
@@ -37,10 +41,12 @@ public class LogAspect {
 		String name = signature.getName();
 
 		// 打印请求信息
-		LOG.info("------------- Start(开始) -------------");
-		LOG.info("Request Address(请求地址): {} {}", request.getRequestURL().toString(), request.getMethod());
-		LOG.info("Class Name & Method(类名方法): {}.{}", signature.getDeclaringTypeName(), name);
-		LOG.info("Remote Address(远程地址): {}", request.getRemoteAddr());
+		LOG.info("------------- 开始 -------------");
+		LOG.info("请求地址: {} {}", request.getRequestURL().toString(), request.getMethod());
+		LOG.info("类名方法: {}.{}", signature.getDeclaringTypeName(), name);
+		LOG.info("远程地址: {}", request.getRemoteAddr());
+
+		RequestContext.setRemoteAddr(getRemoteIp(request));
 
 		// 打印请求参数
 		Object[] args = joinPoint.getArgs();
@@ -60,7 +66,7 @@ public class LogAspect {
 		PropertyPreFilters filters = new PropertyPreFilters();
 		PropertyPreFilters.MySimplePropertyPreFilter excludefilter = filters.addFilter();
 		excludefilter.addExcludes(excludeProperties);
-		LOG.info("Request Params(请求参数): {}", JSONObject.toJSONString(arguments, excludefilter));
+		LOG.info("请求参数: {}", JSONObject.toJSONString(arguments, excludefilter));
 	}
 
 	@Around("controllerPointcut()")
@@ -72,9 +78,28 @@ public class LogAspect {
 		PropertyPreFilters filters = new PropertyPreFilters();
 		PropertyPreFilters.MySimplePropertyPreFilter excludefilter = filters.addFilter();
 		excludefilter.addExcludes(excludeProperties);
-		LOG.info("Returned result(返回结果): {}", JSONObject.toJSONString(result, excludefilter));
-		LOG.info("------------- End(结束) Time Spent(耗时)：{} ms -------------", System.currentTimeMillis() - startTime);
+		LOG.info("返回结果: {}", JSONObject.toJSONString(result, excludefilter));
+		LOG.info("------------- 结束 耗时：{} ms -------------", System.currentTimeMillis() - startTime);
 		return result;
+	}
+
+	/**
+	 * 使用nginx做反向代理，需要用该方法才能取到真实的远程IP
+	 * @param request
+	 * @return
+	 */
+	public String getRemoteIp(HttpServletRequest request) {
+		String ip = request.getHeader("x-forwarded-for");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		return ip;
 	}
 
 }

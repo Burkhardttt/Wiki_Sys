@@ -5,10 +5,12 @@ import com.burkhardt.wiki.domain.UserExample;
 import com.burkhardt.wiki.exception.BusinessException;
 import com.burkhardt.wiki.exception.BusinessExceptionCode;
 import com.burkhardt.wiki.mapper.UserMapper;
+import com.burkhardt.wiki.req.UserLoginReq;
 import com.burkhardt.wiki.req.UserQueryReq;
 import com.burkhardt.wiki.req.UserResetPasswordReq;
 import com.burkhardt.wiki.req.UserSaveReq;
 import com.burkhardt.wiki.resp.PageResp;
+import com.burkhardt.wiki.resp.UserLoginResp;
 import com.burkhardt.wiki.resp.UserQueryResp;
 import com.burkhardt.wiki.util.CopyUtil;
 import com.burkhardt.wiki.util.SnowFlake;
@@ -112,5 +114,27 @@ public class UserService {
 	public void resetPassword(UserResetPasswordReq req) {
 		User user = CopyUtil.copy(req, User.class);
 		userMapper.updateByPrimaryKeySelective(user);
+	}
+
+	/**
+	 * 登录
+	 */
+	public UserLoginResp login(UserLoginReq req) {
+		User userDb = selectByLoginName(req.getLoginName());
+		if (ObjectUtils.isEmpty(userDb)) {
+			// 用户名不存在
+			LOG.info("用户名不存在, {}", req.getLoginName());
+			throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+		} else {
+			if (userDb.getPassword().equals(req.getPassword())) {
+				// 登录成功
+				UserLoginResp userLoginResp = CopyUtil.copy(userDb, UserLoginResp.class);
+				return userLoginResp;
+			} else {
+				// 密码不对
+				LOG.info("密码不对, 输入密码：{}, 数据库密码：{}", req.getPassword(), userDb.getPassword());
+				throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+			}
+		}
 	}
 }

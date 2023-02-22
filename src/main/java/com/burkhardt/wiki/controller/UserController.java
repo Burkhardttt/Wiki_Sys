@@ -1,10 +1,12 @@
 package com.burkhardt.wiki.controller;
 
+import com.burkhardt.wiki.req.UserLoginReq;
 import com.burkhardt.wiki.req.UserQueryReq;
 import com.burkhardt.wiki.req.UserResetPasswordReq;
 import com.burkhardt.wiki.req.UserSaveReq;
 import com.burkhardt.wiki.resp.CommonResp;
 import com.burkhardt.wiki.resp.PageResp;
+import com.burkhardt.wiki.resp.UserLoginResp;
 import com.burkhardt.wiki.resp.UserQueryResp;
 import com.burkhardt.wiki.service.UserService;
 import org.springframework.util.DigestUtils;
@@ -51,4 +53,13 @@ public class UserController {
 		userService.resetPassword(req);
 		return resp;
 	}
+	@PostMapping("/login")
+	public CommonResp login(@Valid @RequestBody UserLoginReq req) {
+		req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+		CommonResp<UserLoginResp> resp = new CommonResp<>();
+		UserLoginResp userLoginResp = userService.login(req);
+		resp.setContent(userLoginResp);
+		return resp;
+	}
 }
+

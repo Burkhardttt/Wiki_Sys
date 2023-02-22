@@ -1,6 +1,9 @@
 <template>
   <a-layout-header class="header">
     <div class="logo" />
+    <a class="login-menu" @click="showLoginModal">
+      <span>登录</span>
+    </a>
     <a-menu
         theme="dark"
         mode="horizontal"
@@ -21,9 +24,6 @@
       <a-menu-item key="/about">
         <router-link to="/about">关于我们</router-link>
       </a-menu-item>
-      <a class="login-menu" @click="showLoginModal">
-        <span>登录</span>
-      </a>
     </a-menu>
 
     <a-modal

@@ -5,21 +5,21 @@
         <a-card>
           <a-row>
             <a-col :span="8">
-              <a-statistic title="总阅读量" :value="statistic.viewCount">
+              <a-statistic title="Total Reads(总阅读量)" :value="statistic.viewCount">
                 <template #suffix>
                   <UserOutlined />
                 </template>
               </a-statistic>
             </a-col>
             <a-col :span="8">
-              <a-statistic title="总点赞量" :value="statistic.voteCount">
+              <a-statistic title="Total Likes(总点赞量)" :value="statistic.voteCount">
                 <template #suffix>
                   <like-outlined />
                 </template>
               </a-statistic>
             </a-col>
             <a-col :span="8">
-              <a-statistic title="点赞率" :value="statistic.voteCount / statistic.viewCount * 100"
+              <a-statistic title="Likes Rate(点赞率)" :value="statistic.voteCount / statistic.viewCount * 100"
                            :precision="2"
                            suffix="%"
                            :value-style="{ color: '#cf1322' }">
@@ -38,14 +38,14 @@
         <a-card>
           <a-row>
             <a-col :span="12">
-              <a-statistic title="今日阅读" :value="statistic.todayViewCount" style="margin-right: 50px">
+              <a-statistic title="Reads Today(今日阅读)" :value="statistic.todayViewCount" style="margin-right: 50px">
                 <template #suffix>
                   <UserOutlined />
                 </template>
               </a-statistic>
             </a-col>
             <a-col :span="12">
-              <a-statistic title="今日点赞" :value="statistic.todayVoteCount">
+              <a-statistic title="Likes Today(今日点赞)" :value="statistic.todayVoteCount">
                 <template #suffix>
                   <like-outlined />
                 </template>
@@ -59,7 +59,7 @@
           <a-row>
             <a-col :span="12">
               <a-statistic
-                  title="预计今日阅读"
+                  title="Est Reads Today(预计今日阅读)"
                   :value="statistic.todayViewIncrease"
                   :value-style="{ color: '#0000ff' }"
               >
@@ -70,7 +70,7 @@
             </a-col>
             <a-col :span="12">
               <a-statistic
-                  title="预计今日阅读增长"
+                  title="Est Reads increasing Today(预计今日阅读增长)"
                   :value="statistic.todayViewIncreaseRateAbs"
                   :precision="2"
                   suffix="%"
@@ -146,13 +146,13 @@ export default defineComponent({
       // 指定图表的配置项和数据
       const option = {
         title: {
-          text: '30天趋势图'
+          text: 'Last 30 Days(30天趋势图)'
         },
         tooltip: {
           trigger: 'axis'
         },
         legend: {
-          data: ['总阅读量', '总点赞量']
+          data: ['Total Reads(总阅读量)', 'Total Likes(总点赞量)']
         },
         grid: {
           left: '1%',
@@ -175,14 +175,14 @@ export default defineComponent({
         },
         series: [
           {
-            name: '总阅读量',
+            name: 'Total Reads(总阅读量)',
             type: 'line',
             // stack: '总量', 不堆叠
             data: seriesView,
             smooth: true
           },
           {
-            name: '总点赞量',
+            name: 'Total Likes(总点赞量)',
             type: 'line',
             // stack: '总量', 不堆叠
             data: seriesVote,

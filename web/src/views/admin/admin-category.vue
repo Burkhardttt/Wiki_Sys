@@ -7,12 +7,12 @@
         <a-form layout="inline" :model="param">
           <a-form-item>
             <a-button type="primary" @click="handleQuery()">
-              查询
+              Query(查询)
             </a-button>
           </a-form-item>
           <a-form-item>
             <a-button type="primary" @click="add()">
-              新增
+              Add(新增)
             </a-button>
           </a-form-item>
         </a-form>
@@ -30,7 +30,7 @@
         <template v-slot:action="{ text, record }">
           <a-space size="small">
             <a-button type="primary" @click="edit(record)">
-              编辑
+              Edit(编辑)
             </a-button>
             <a-popconfirm
                 title="删除后不可恢复，确认删除?"
@@ -39,7 +39,7 @@
                 @confirm="handleDelete(record.id)"
             >
               <a-button type="danger">
-                删除
+                Delete(删除)
               </a-button>
             </a-popconfirm>
           </a-space>
@@ -55,23 +55,23 @@
       @ok="handleModalOk"
   >
     <a-form :model="category" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="名称">
+      <a-form-item label="Name(名称)">
         <a-input v-model:value="category.name" />
       </a-form-item>
-      <a-form-item label="父分类">
+      <a-form-item label="Parent(父分类)">
         <a-select
             v-model:value="category.parent"
             ref="select"
         >
           <a-select-option value="0">
-            无
+            None(无)
           </a-select-option>
           <a-select-option v-for="c in level1" :key="c.id" :value="c.id" :disabled="category.id === c.id">
             {{c.name}}
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="顺序">
+      <a-form-item label="sort(顺序)">
         <a-input v-model:value="category.sort" />
       </a-form-item>
     </a-form>
@@ -94,16 +94,16 @@ export default defineComponent({
 
     const columns = [
       {
-        title: '名称',
+        title: 'Name(名称)',
         dataIndex: 'name'
       },
       {
-        title: '父分类',
+        title: 'Parent(父分类)',
         key: 'parent',
         dataIndex: 'parent'
       },
       {
-        title: '顺序',
+        title: 'Sort(顺序)',
         dataIndex: 'sort'
       },
       {

@@ -11,12 +11,12 @@
           </a-form-item>
           <a-form-item>
             <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
-              查询
+              Query(查询)
             </a-button>
           </a-form-item>
           <a-form-item>
             <a-button type="primary" @click="add()">
-              新增
+              Add(新增)
             </a-button>
           </a-form-item>
         </a-form>
@@ -39,11 +39,11 @@
           <a-space size="small">
             <router-link :to="'/admin/doc?ebookId=' + record.id">
               <a-button type="primary">
-                文档管理
+                Docs Management(文档管理)
               </a-button>
             </router-link>
             <a-button type="primary" @click="edit(record)">
-              编辑
+              Edit(编辑)
             </a-button>
             <a-popconfirm
                 title="删除后不可恢复，确认删除?"
@@ -52,7 +52,7 @@
                 @confirm="handleDelete(record.id)"
             >
               <a-button type="danger">
-                删除
+                Delete(删除)
               </a-button>
             </a-popconfirm>
           </a-space>
@@ -68,20 +68,20 @@
       @ok="handleModalOk"
   >
     <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="封面">
+      <a-form-item label="Cover(封面)">
         <a-input v-model:value="ebook.cover" />
       </a-form-item>
-      <a-form-item label="名称">
+      <a-form-item label="Name(名称)">
         <a-input v-model:value="ebook.name" />
       </a-form-item>
-      <a-form-item label="分类">
+      <a-form-item label="Category(分类)">
         <a-cascader
             v-model:value="categoryIds"
             :field-names="{ label: 'name', value: 'id', children: 'children' }"
             :options="level1"
         />
       </a-form-item>
-      <a-form-item label="描述">
+      <a-form-item label="Description(描述)">
         <a-input v-model:value="ebook.description" type="textarea" />
       </a-form-item>
     </a-form>
@@ -109,28 +109,28 @@ export default defineComponent({
 
     const columns = [
       {
-        title: '封面',
+        title: 'Cover(封面)',
         dataIndex: 'cover',
         slots: { customRender: 'cover' }
       },
       {
-        title: '名称',
+        title: 'Name(名称)',
         dataIndex: 'name'
       },
       {
-        title: '分类',
+        title: 'Category(分类)',
         slots: { customRender: 'category' }
       },
       {
-        title: '文档数',
+        title: 'DocCount(文档数)',
         dataIndex: 'docCount'
       },
       {
-        title: '阅读数',
+        title: 'ViewCount(阅读数)',
         dataIndex: 'viewCount'
       },
       {
-        title: '点赞数',
+        title: 'LikesCount(点赞数)',
         dataIndex: 'voteCount'
       },
       {

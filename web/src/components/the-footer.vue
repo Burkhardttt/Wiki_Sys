@@ -1,6 +1,6 @@
 <template>
   <a-layout-footer style="text-align: center">
-    甲蛙电子书<span v-show="user.id">，欢迎：{{user.name}}</span>
+    Burkhardt Ebook<span v-show="user.id">，Welcome(你好)：{{user.name}}</span>
   </a-layout-footer>
 </template>
 

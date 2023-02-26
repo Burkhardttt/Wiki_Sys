@@ -9,12 +9,12 @@
             <a-form layout="inline" :model="param">
               <a-form-item>
                 <a-button type="primary" @click="handleQuery()">
-                  查询
+                  Query(查询)
                 </a-button>
               </a-form-item>
               <a-form-item>
                 <a-button type="primary" @click="add()">
-                  新增
+                  Add(新增)
                 </a-button>
               </a-form-item>
             </a-form>
@@ -35,7 +35,7 @@
             <template v-slot:action="{ text, record }">
               <a-space size="small">
                 <a-button type="primary" @click="edit(record)" size="small">
-                  编辑
+                  Edit(编辑)
                 </a-button>
                 <a-popconfirm
                     title="删除后不可恢复，确认删除?"
@@ -44,7 +44,7 @@
                     @confirm="handleDelete(record.id)"
                 >
                   <a-button type="danger" size="small">
-                    删除
+                    Delete(删除)
                   </a-button>
                 </a-popconfirm>
               </a-space>
@@ -56,14 +56,14 @@
             <a-form layout="inline" :model="param">
               <a-form-item>
                 <a-button type="primary" @click="handleSave()">
-                  保存
+                  Save(保存)
                 </a-button>
               </a-form-item>
             </a-form>
           </p>
           <a-form :model="doc" layout="vertical">
             <a-form-item>
-              <a-input v-model:value="doc.name" placeholder="名称"/>
+              <a-input v-model:value="doc.name" placeholder="Name(名称)"/>
             </a-form-item>
             <a-form-item>
               <a-tree-select
@@ -71,18 +71,18 @@
                   style="width: 100%"
                   :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                   :tree-data="treeSelectData"
-                  placeholder="请选择父文档"
+                  placeholder="Select Parent Doc(请选择父文档)"
                   tree-default-expand-all
                   :replaceFields="{title: 'name', key: 'id', value: 'id'}"
               >
               </a-tree-select>
             </a-form-item>
             <a-form-item>
-              <a-input v-model:value="doc.sort" placeholder="顺序"/>
+              <a-input v-model:value="doc.sort" placeholder="Sort(顺序)"/>
             </a-form-item>
             <a-form-item>
               <a-button type="primary" @click="handlePreviewContent()">
-                <EyeOutlined /> 内容预览
+                <EyeOutlined /> Preview(内容预览)
               </a-button>
             </a-form-item>
             <a-form-item>

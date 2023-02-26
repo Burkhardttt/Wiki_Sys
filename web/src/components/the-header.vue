@@ -2,20 +2,20 @@
   <a-layout-header class="header">
     <div class="logo" />
     <a class="login-menu" v-show="user.id">
-      <span>您好：{{user.name}}</span>
+      <span>Hello(你好)：{{user.name}}</span>
     </a>
     <a class="login-menu" v-show="!user.id" @click="showLoginModal">
-      <span>登录</span>
+      <span>Login(登陆)</span>
     </a>
 
     <a-popconfirm
-        title="确认退出登录?"
-        ok-text="是"
-        cancel-text="否"
+        title="Confirm to logout(确认退出登录?)"
+        ok-text="Yes(是)"
+        cancel-text="No(否)"
         @confirm="logout()"
     >
       <a class="login-menu" v-show="user.id">
-        <span>退出登录</span>
+        <span>Logout(退出登录)</span>
       </a>
     </a-popconfirm>
     <a-menu
@@ -24,19 +24,19 @@
         :style="{ lineHeight: '64px' }"
     >
       <a-menu-item key="/">
-        <router-link to="/">首页</router-link>
+        <router-link to="/">HomePage(首页)</router-link>
       </a-menu-item>
       <a-menu-item key="/admin/user" :style="user.id? {} : {display:'none'}">
-        <router-link to="/admin/user">用户管理</router-link>
+        <router-link to="/admin/user">User Management(用户管理)</router-link>
       </a-menu-item>
       <a-menu-item key="/admin/ebook" :style="user.id? {} : {display:'none'}">
-        <router-link to="/admin/ebook">电子书管理</router-link>
+        <router-link to="/admin/ebook">Ebook Management(电子书管理)</router-link>
       </a-menu-item>
       <a-menu-item key="/admin/category" :style="user.id? {} : {display:'none'}">
-        <router-link to="/admin/category">分类管理</router-link>
+        <router-link to="/admin/category">Category Management(分类管理)</router-link>
       </a-menu-item>
       <a-menu-item key="/about">
-        <router-link to="/about">关于我们</router-link>
+        <router-link to="/about">About(关于我们)</router-link>
       </a-menu-item>
 
     </a-menu>
